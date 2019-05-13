@@ -1,0 +1,25 @@
+Create (Michal:Worker {name:'Michal', id: 3656,post:'TA',salary: 16000}),
+	(Dan:Worker {name:'Dan', id: 3650,post:'TA',salary: 16000}),
+	(Ron :Worker {name:'Ron', id: 3651,post:'TA',salary: 15000}),
+	(John :Worker {name:'John', id: 3652,post:'HE',salary: 16000}),
+	(David : manager {name:'David', id: 3653,post:'KS',salary: 17000}),
+	(Dovi : manager {name:'Dovi', id: 3655,post:'RG',salary: 50000}),
+	(Roni : manager {name:'Roni', id: 3657,post:'JE',salary: 100000}),
+	(Development: department{name:'Development'}),
+	(Sales: department{name:'Sales'})
+
+Create (John)-[:work_in]->(David),
+	(Michal)-[:work_in]->(Dovi),
+	(Ron)-[:work_in]->(Roni),
+	(Ron)-[:Friend_of]->(Michal),
+	(Ron)-[:Friend_of]->(John),
+	(Tuti)-[:Friend_of]->(Koby),
+	(Yoav)-[:owner]->(Lassy),
+	(Yoav)-[:owner]->(Caty),
+	(Tuti)-[:owner]->(Fishy)
+MATCH (a:Worker),(b:manager) WHERE a.name = 'John' AND b.name = 'David' CREATE (a)-[:work_in]->(b)
+
+
+MATCH (n:Worker)
+WITH n.address ="TA" AND n.salary>=10000 AND count(dep WHERE (n)-[:work_in]->(dep))>=2 AND ((n)-[*..3]-(b)  WHERE b.salary>=10000 and b-[r1:work_in]->(depOfB{name:‘QA'}))
+RETURN DISTINCT n.name order by n.name
